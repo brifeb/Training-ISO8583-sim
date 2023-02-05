@@ -1,5 +1,5 @@
 import time
-from flask import Flask, request
+from flask import Flask, request, render_template
 import iso8583
 from iso8583.specs import default_ascii as spec
 
@@ -9,6 +9,7 @@ app = Flask(__name__)
 @app.route('/api/iso8583', methods=['POST'])
 def iso8583_handler():
     # Mengambil pesan ISO 8583 dari body permintaan HTTP
+    print('request:', request)
     iso_request = request.get_data()
     print('iso_request:', iso_request)
 
@@ -46,8 +47,14 @@ def iso8583_handler():
     # Membuat pesan respon ISO 8583
     iso_response = encode_raw
 
-    return iso_response
+    return {
+        'data': iso_response.decode('utf-8')
+    }
 
+
+@app.route('/')
+def index():
+    return render_template('client.html')
 
 if __name__ == '__main__':
     app.run(port=5001)

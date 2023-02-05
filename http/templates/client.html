@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JavaScript POST Request Example</title>
+</head>
+<body>
+  <script>
+    msg = '080082200000800000000400000000000000090300085400000106777006001'
+    console.log(msg)
+    fetch('http://localhost:5001/api/iso8583', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: msg
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Handle the response data
+      console.log('response', data)
+    })
+    .catch(error => {
+      // Handle any errors
+      console.log('error?', error)
+    });
+  </script>
+</body>
+</html>
