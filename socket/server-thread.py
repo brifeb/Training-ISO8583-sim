@@ -1,15 +1,9 @@
-import time
 import socket
+import threading
 import iso8583
 from iso8583.specs import default_ascii as spec
+import time
 
-
-
-# Buat socket untuk mendengarkan koneksi masuk
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind(('localhost', 5000))
-s.listen(1)
-print("server started")
 
 # template message
 sign_on_respond = {
@@ -27,19 +21,15 @@ echo_msg_respond = {
     '70': '301'
 }
 
-while True:
-    print('wait..')
-    # Tunggu koneksi masuk
-    conn, addr = s.accept()
-    print('Connected by', addr)
-
+def handle_client(conn, client_address):
     while True:
         try:
-            # Terima pesan masuk
+            # Terima data dari client
             data = conn.recv(1024)
-            print('Received message:', data)
 
             if data:
+                print('Menerima data dari', client_address, ':', data.decode())
+
                 # Dekode pesan masuk
                 decoded, encoded = iso8583.decode(data, spec)
                 iso8583.pp(decoded, spec)
@@ -49,9 +39,8 @@ while True:
                 time.sleep(1)  # simulate 1s processing
 
                 mti = decoded["t"]
-
-
                 print(f'mti{mti}')
+
                 # Periksa apakah tipe pesan adalah 0800
                 if mti == '0800':
                     net_msg_type = decoded["70"]
@@ -63,27 +52,48 @@ while True:
                     elif net_msg_type == '301':
                         print("ECHO TEST")
                         reply = echo_msg_respond
-
                     print(f"\n{'-' * 50}")
                     print('Sending reply: ')
 
-                    # Encode pesan balasan ke byte
-                    encode_raw, encoded = iso8583.encode(reply, spec)
-                    print('message encode_raw: ', encode_raw)
+          
 
-                    # Kirim balasan
-                    conn.sendall(encode_raw)
-
-                    print(f"\n{'=' * 50}")
-                    print('\n\n')
-
-                
                 elif mti == '0200':
-                     # Kirim balasan
-                    conn.sendall(data)
+                    print("echo back 0200")
+
+                    decoded['t'] = '0210'
+                    decoded['39'] = '12'
+                    reply = decoded
+
+                # Encode pesan balasan ke byte
+                encode_raw, encoded = iso8583.encode(reply, spec)
+                print('message encode_raw: ', encode_raw)
+
+                # Kirim data kembali ke client
+                conn.sendall(encode_raw)
+
+
             else:
                 break
-        except ConnectionResetError:
+        except:
             break
+
     # Tutup koneksi
     conn.close()
+
+# Inisialisasi socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Ikat socket ke alamat IP dan port tertentu
+server_address = ('localhost', 5000)
+s.bind(server_address)
+
+# Listen untuk koneksi masuk
+s.listen(1)
+
+# Terima koneksi
+print('Menunggu koneksi...')
+while True:
+    conn, client_address = s.accept()
+    print('Koneksi diterima dari', client_address)
+    t = threading.Thread(target=handle_client, args=(conn, client_address))
+    t.start()
