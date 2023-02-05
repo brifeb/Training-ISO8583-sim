@@ -25,7 +25,6 @@ echo_msg = {
 
 
 while True:
-    time.sleep(5)
     # Encode pesan ke byte
     encoded_raw, encoded = iso8583.encode(echo_msg, spec)
     print('Sending message: ', encoded_raw)
@@ -38,12 +37,14 @@ while True:
     data = s.recv(1024)
 
     # Dekode pesan balasan menjadi sebuah instance ISO 8583
-    print(f"\n{'-' * 100}")
+    print(f"\n{'-' * 70}")
     print('Received reply: ', data)
 
     # Encode pesan ke byte
     decode, encoded = iso8583.decode(data, spec)
     iso8583.pp(decode, spec)
+
+    time.sleep(5) # tunggu sebelum kirim pesan selanjutnya
 
 # Tutup koneksi
 s.close()
