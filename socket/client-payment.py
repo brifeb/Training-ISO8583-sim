@@ -8,12 +8,20 @@ import sys
 
 # Beri nama terminal dari argumen 
 terminal_id = "TERM0001"
+
+
 print('Jumlah argument:', len(sys.argv))
 print('Argumen:', sys.argv)
 
+
+
 if len(sys.argv) > 1:
-    print('Argumen pertama:', sys.argv[1])
+    print('Argumen kedua:', sys.argv[1])
     terminal_id = sys.argv[1]
+
+print("terminal_id:", terminal_id)
+
+
 
 # Buat socket untuk terhubung ke server
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

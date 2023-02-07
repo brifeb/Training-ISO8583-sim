@@ -1,0 +1,16 @@
+.App {
+  text-align: center;
+  padding: 50px;
+}
+
+
+.Produk {
+  background: #eee;
+  border-radius: 50px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+nav, button {
+  cursor: pointer;
+}
