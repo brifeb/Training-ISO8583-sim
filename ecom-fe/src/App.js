@@ -49,13 +49,12 @@ function App() {
 
     let handleBayar = async (bayarProduk) => {
         // request ke be,
-        const response = await axios.post("http://127.0.0.1:5001/api/",
-        {
-          card: cardnumber,
-          produk: bayarProduk
+        const response = await axios.post("http://127.0.0.1:5001/api/", {
+            card: cardnumber,
+            produk: bayarProduk,
         });
 
-        console.log('response', response)
+        console.log("response", response);
 
         // product, data kartu ( nomor kartu)
         let responsecode = response.data.rc;
@@ -91,7 +90,7 @@ function App() {
 
             {halaman === "pembayaran" && (
                 <>
-                    <p onClick={() => setHalaman("home")}> &lt; back </p>
+                    <nav onClick={() => setHalaman("home")}> &lt; back </nav>
                     <h2>Pembayaran</h2>
                     <div className="Produk">
                         <Product data={selectedProduct} />
@@ -112,11 +111,13 @@ function App() {
                                     setCardnumber(value.target.value);
                                 }}
                             />
-                            <button
-                                onClick={() => handleBayar(selectedProduct)}
-                            >
-                                BAYAR
-                            </button>
+                            <p>
+                                <button
+                                    onClick={() => handleBayar(selectedProduct)}
+                                >
+                                    BAYAR
+                                </button>
+                            </p>
                         </div>
                     </div>
                 </>
