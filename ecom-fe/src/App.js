@@ -60,7 +60,9 @@ function App() {
         let responsecode = response.data.rc;
         if (responsecode === "00") {
             setStatus("Berhasil rc:" + responsecode);
-        } else {
+        } else if (responsecode == "56") {
+	    setStatus("Pembayaran Gagal, kartu tidak terdaftar");
+	} else {
             setStatus("Gagal \nrc:" + responsecode);
         }
 
