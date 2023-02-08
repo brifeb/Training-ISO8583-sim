@@ -3,6 +3,11 @@
 
 https://pyiso8583.readthedocs.io/en/latest/index.html 
 
+## Install library Flask
+>pip install Flask
+
+https://palletsprojects.com/p/flask/
+
 # Menjalankan socket testing
 ## socket:
 >cd socket
