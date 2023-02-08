@@ -4,12 +4,17 @@ from flask import Flask, request, render_template
 import iso8583
 from iso8583.specs import default_ascii as spec
 import json
+from flask_cors import CORS
 
 from  tohostbank import rekuest_payment
 
 app = Flask(__name__)
+CORS(app)
+
+
 @app.route('/api/', methods=['POST'])
 def api_handler():
+    print("halo")
     # Mengambil pesan dari Frontend
     data = request.get_data()
     data = data.decode('utf8').replace("'", '"')
