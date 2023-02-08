@@ -1,4 +1,4 @@
-## libs
+## Install library ISO8583
 >pip install pyiso8583
 
 https://pyiso8583.readthedocs.io/en/latest/index.html 
