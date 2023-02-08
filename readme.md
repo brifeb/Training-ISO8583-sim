@@ -8,6 +8,11 @@ https://pyiso8583.readthedocs.io/en/latest/index.html
 
 https://palletsprojects.com/p/flask/
 
+## Install library Flask-CORS
+>pip install flask-cors
+
+https://flask-cors.readthedocs.io/en/latest/
+
 # Menjalankan socket testing
 ## socket:
 >cd socket
